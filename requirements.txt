@@ -3,3 +3,8 @@ tensorflow-addons
 gitpython
 ConfigArgParse
 numpy
+GDAL
+psycopg2
+Pillow
+matplotlib
+scikit-learn
