@@ -9,4 +9,6 @@ bin/
 var/
 pyvenv.cfg
 
+logs/
+
 *.orig
