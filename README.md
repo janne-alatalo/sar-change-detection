@@ -46,6 +46,16 @@ And for SVC classifier:
 python svm_classifier.py "/where/you/want/to/store/simulated-change-with-prediction/"
 ```
 
+## Simulated change
+
+This repository includes the `generate_change_dataset.py` script that was used
+to generate the simulated change dataset for the experiments. However, the
+script is too tightly coupled with the database for it to be executable
+anywhere. The script requires access to the PostgreSQL database that stores the
+SAR image rasters, and the database is too large to be shareable. However, you
+can request the dataset that was used to run the experiments. The dataset
+includes the simulated changes for the validation samples.
+
 ## Acknowledgements
 
 This project was developed in the [Data for Utilisation - Leveraging digitalisation through modern artificial intelligence solutions and cybersecurity project of Jamk University of Applied Sciences](https://www.jamk.fi/fi/tutkimus-ja-kehitys/tki-projektit/tieto-tuottamaan-digitalisaation-hyodyntaminen-modernien-tekoalyratkaisujen-ja-kyberturvallisuuden)
