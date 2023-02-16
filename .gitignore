@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+dist/
+lib/
+lib64
+bin/
+var/
+pyvenv.cfg
+
+*.orig
