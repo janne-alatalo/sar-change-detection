@@ -426,7 +426,7 @@ if __name__ == '__main__':
         '--batch_size',
         env_var='BATCH_SIZE',
         type=int,
-        default=100,
+        default=200,
         help='Batch size',
     )
     parser.add_argument(
@@ -461,14 +461,14 @@ if __name__ == '__main__':
         '--dropout',
         env_var='DROPOUT',
         type=float,
-        default=None,
+        default=0.3,
         help='Dropout rate in Upsample layers.',
     )
     parser.add_argument(
         '--adamw_weight_decay',
         env_var='ADAMW_WEIGHT_DECAY',
         type=float,
-        default=0.005,
+        default=0.0,
         help='AdamW weight decay parameter.',
     )
     parser.add_argument(
@@ -509,7 +509,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--learning_rate',
         env_var='LEARNING_RATE',
-        default=0.001,
+        default=0.0001,
         type=float,
         help='Model training optimizer learning rate',
     )
@@ -524,7 +524,7 @@ if __name__ == '__main__':
         '--resblock_bottleneck_multiplier',
         env_var='RESBLOCK_BOTTLENECK_MULTIPLIER',
         type=int,
-        default=4,
+        default=3,
         help='The second layer in resblock is first_layer_filter_size * resblock_bottleneck_multiplier',
     )
     parser.add_argument(
