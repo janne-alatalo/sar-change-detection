@@ -155,34 +155,6 @@ def simulated_change_diff_samples(params):
     prediction_diff = np.sqrt(np.sum(np.square(prediction_diff), axis=-1))
     previous_diff = np.sqrt(np.sum(np.square(previous_diff), axis=-1))
 
-    #print('')
-    #print(f'target incidence angle {target_image_incidence_angle}, target platform heading {target_image_platform_heading}')
-    #print(f'selected image incidence angle {input_image_incidence_angles[closest_input_idx]}, selected image platform heading {input_image_platform_headings[closest_input_idx]}')
-    #print('')
-    #def to_image(img_arr):
-    #    img_max = np.nanmax(img_arr)
-    #    img_min = np.nanmin(img_arr)
-    #    img_arr = (img_arr - img_min) / (img_max - img_min)
-    #    #third_chan = img_arr[:, :, 1] / img_arr[:, :, 0]
-    #    third_chan = np.zeros_like(img_arr[:, :, 0])
-    #    #third_chan_max = np.nanmax(third_chan)
-    #    #third_chan_min = np.nanmin(third_chan)
-    #    #third_chan = (third_chan - third_chan_min) / (third_chan_max - third_chan_min)
-    #    full_img = np.stack(
-    #        [
-    #            img_arr[:, :, 0],
-    #            img_arr[:, :, 1],
-    #            third_chan,
-    #        ], axis=-1
-    #    )
-    #    return full_img
-    #fig, axs = plt.subplots(2, 2)
-    #axs[0, 0].imshow(to_image(closest_input))
-    #axs[0, 1].imshow(to_image(simulated_change_image))
-    #axs[1, 0].hist(closest_input.flatten(), bins=100)
-    #axs[1, 0].hist(simulated_change_image.flatten(), bins=100)
-    #plt.show()
-
     y_mask = (simulated_change_mask != 0).astype(dtype=np.float32)
 
     return (prediction_diff, previous_diff, y_mask)
