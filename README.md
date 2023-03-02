@@ -21,6 +21,13 @@ python main.py \
 
 The dataset that is used in the paper can be requested from the author: janne.alatalo(at)jamk.fi
 
+
+The dataset must be preprocessed with `preprocess_tfrecords.py` script before training the model.
+
+```
+python preprocess_tfrecords.py --dataset_stats path/to/stats.json --output_dir /path/to/train/records/ input_file.tfrecord.GZIP
+```
+
 ## Computing the classifier accuracies
 
 ### Use the trained model checkpoint to add predictions to the dataset
