@@ -1,6 +1,6 @@
-# Neural Network-Based Mapping Transformation Function for Improved Change Detection from SAR Satellite Images
+# Improved Difference Images for Change Detection Classifiers in SAR Imagery Using Deep Learning
 
-This repository includes code for the paper **Neural Network-Based Mapping Transformation Function for Improved Change Detection from SAR Satellite Images** (submitted to peer-review).
+This repository includes code for the paper **Improved Difference Images for Change Detection Classifiers in SAR Imagery Using Deep Learning** (submitted to peer-review).
 
 ## Install dependencies
 
