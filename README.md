@@ -2,6 +2,9 @@
 
 This repository includes code for the paper **Improved Difference Images for Change Detection Classifiers in SAR Imagery Using Deep Learning** (submitted to peer-review).
 
+
+Preprint available: [https://arxiv.org/abs/2303.17835](https://arxiv.org/abs/2303.17835)
+
 ## Install dependencies
 
 ```
@@ -62,6 +65,19 @@ anywhere. The script requires access to the PostgreSQL database that stores the
 SAR image rasters, and the database is too large to be shareable. However, you
 can request the dataset that was used to run the experiments. The dataset
 includes the simulated changes for the validation samples.
+
+## Citation (preprint version)
+
+```
+@misc{alatalo2023improved,
+      title={Improved Difference Images for Change Detection Classifiers in SAR Imagery Using Deep Learning}, 
+      author={Janne Alatalo and Tuomo Sipola and Mika Rantonen},
+      year={2023},
+      eprint={2303.17835},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
 
 ## Acknowledgements
 
