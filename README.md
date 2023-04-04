@@ -81,10 +81,9 @@ includes the simulated changes for the validation samples.
 
 ## Acknowledgements
 
-This research was funded by the Regional Council of Central Finland/Council of
-Tampere Region and European Regional Development Fund as part of the
-[*Data for Utilisation -- Leveraging digitalisation through modern artificial intelligence solutions and cybersecurity* project of Jamk University of Applied Sciences](https://www.jamk.fi/fi/tutkimus-ja-kehitys/tki-projektit/tieto-tuottamaan-digitalisaation-hyodyntaminen-modernien-tekoalyratkaisujen-ja-kyberturvallisuuden),
-grant number A76982.
+This research was funded by the Regional Council of Central Finland/Council of Tampere Region and European Regional Development Fund as part of the
+[*Data for Utilisation -- Leveraging digitalisation through modern artificial intelligence solutions and cybersecurity*](https://www.jamk.fi/fi/tutkimus-ja-kehitys/tki-projektit/tieto-tuottamaan-digitalisaation-hyodyntaminen-modernien-tekoalyratkaisujen-ja-kyberturvallisuuden) (grant number A76982),
+and [*coADDVA - ADDing VAlue by Computing in Manufacturing*](https://www.jamk.fi/en/research-and-development/rdi-projects/coaddva-adding-value-by-computing-in-manufacturing) (grant number A77973) projects of Jamk University of Applied Sciences.
 
 <p>
   <img src="figs/eu-logo.png" height="100" title="Co-funded by the European Union">
