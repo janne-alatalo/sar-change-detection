@@ -356,6 +356,7 @@ def x_y_split(sample):
         sample['input_image_mission_ids'],
         fn_output_signature=tf.float64,
     )
+    # NOTE! if you change this, also update ignore_weather_info function
     latent_metadata = tf.concat([
         tf.reshape(sample['input_image_temperatures'], [-1]),
         tf.reshape(sample['input_image_snow_depths'], [-1]),
@@ -391,4 +392,36 @@ def x_y_split(sample):
 
     return d
 
+# Hacky way of removing the weather data from the latent vector to experiment
+# how model works without them.
+def ignore_weather_info(latent_vector_batch):
+    num_imgs_per_date = 4
+    num_percipitations_per_date = 4
+    # skip temperatures and snow_depths
+    input_platform_headings_slice = slice(num_imgs_per_date * 2, num_imgs_per_date * 3)
+    input_incidence_angles_slice = slice(num_imgs_per_date * 3, num_imgs_per_date * 4)
+    percipitation_offset = num_imgs_per_date * 4 + num_imgs_per_date * num_percipitations_per_date
+    input_mission_ids_slice = slice(percipitation_offset, percipitation_offset + num_imgs_per_date)
 
+    target_data_offset = percipitation_offset + num_imgs_per_date
+
+    target_platform_heading_idx = target_data_offset + 2
+    target_incidence_angle_idx = target_data_offset + 3
+    target_mission_id_idx = target_data_offset + 4
+
+    input_platform_headings = latent_vector_batch[:, input_platform_headings_slice]
+    input_incidence_angles = latent_vector_batch[:, input_incidence_angles_slice]
+    input_mission_ids = latent_vector_batch[:, input_mission_ids_slice]
+
+    target_platform_heading = latent_vector_batch[:, target_platform_heading_idx]
+    target_incidence_angle = latent_vector_batch[:, target_incidence_angle_idx]
+    target_mission_id = latent_vector_batch[:, target_mission_id_idx]
+
+    return (
+        input_platform_headings,
+        input_incidence_angles,
+        input_mission_ids,
+        target_platform_heading,
+        target_incidence_angle,
+        target_mission_id,
+    )

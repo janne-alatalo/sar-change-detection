@@ -107,6 +107,7 @@ def main(args):
         unet_skips=args.unet_skips,
         resblock_bottleneck_multiplier=args.resblock_bottleneck_multiplier,
         dropout=args.dropout,
+        no_weather_data=args.no_weather_data,
     )
 
     datenow_tag = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
@@ -557,6 +558,14 @@ if __name__ == '__main__':
         const=True,
         default=False,
         help='Ignore dirty git repository',
+    )
+    parser.add_argument(
+        '--no_weather_data',
+        type=str2bool,
+        nargs='?',
+        const=True,
+        default=False,
+        help='Do not add the weather data to the latent vectors',
     )
     parser.add_argument(
         '--no_mixed_precision',

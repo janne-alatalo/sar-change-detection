@@ -5,6 +5,8 @@ import tensorflow as tf
 import tensorflow_addons as tfa
 import numpy as np
 
+from dataset_functions import ignore_weather_info
+
 def similarity_loss(input_image_stack, target_img, predicted, scaler):
 
     input_sar_imgs = input_image_stack[:, :, :, 0:-1]                           # bs, 512, 512, 8 (drop the dem raster)
@@ -53,10 +55,37 @@ class SARWeatherUNet(tf.keras.Model):
 
         self.downsampler = Downsampler(model_params, drop_path_rates[0:9])
         self.upsampler = Upsampler(model_params, drop_path_rates[9:])
+        self.model_params = model_params
 
     def call(self, samples, training=None):
         input = samples['input_image_stack']
         latent_metadata = samples['latent_metadata']
+        if self.model_params.no_weather_data:
+            (
+                input_platform_headings,
+                input_incidence_angles,
+                input_mission_ids,
+                target_platform_heading,
+                target_incidence_angle,
+                target_mission_id,
+            ) = ignore_weather_info(latent_metadata)
+            target_data = tf.stack(
+                [
+                    target_platform_heading,
+                    target_incidence_angle,
+                    target_mission_id,
+                ],
+                axis=-1,
+            )
+            latent_metadata = tf.concat(
+                [
+                    input_platform_headings,
+                    input_incidence_angles,
+                    input_mission_ids,
+                    target_data,
+                ],
+                axis=-1
+            )
         x, skips = self.downsampler(input, training=training)
         lmd_shape = latent_metadata.shape
         # bs, len(one_sample_latent_metdata) -> bs, 1, 1, len(one_sample_latent_metdata)
@@ -79,6 +108,7 @@ class ModelParams():
     backend_params: typing.Union[list[tuple[int, int]], None]
     unet_skips: str
     resblock_bottleneck_multiplier: int
+    no_weather_data: bool
     dropout: float = 0.0
 
     def asdict(self):
