@@ -17,7 +17,6 @@ pip install -r requirements.txt
 python main.py \
         --train_data "/path/to/train/records/*.tfrecord.GZIP" \
         --val_data "/path/to/val/records/*.tfrecord.GZIP" \
-        --mixed_precision \
         --no_checkpoints \
         --epochs 50
 ```
