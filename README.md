@@ -30,6 +30,13 @@ The dataset must be preprocessed with `preprocess_tfrecords.py` script before tr
 python preprocess_tfrecords.py --dataset_stats path/to/stats.json --output_dir /path/to/train/records/ input_file.tfrecord.GZIP
 ```
 
+You might want to use [GNU parallel](https://www.gnu.org/software/parallel/) or similar to parallellize the processing e.g.
+
+```
+# assuming that files.txt includes filepaths to all files you want to preprocess
+parallel --halt now,fail=1 -j 45 -I{} python preprocess_tfrecords.py --dataset_stats path/to/stats.json --output_dir /path/to/train/records/ {} :::: files.txt
+```
+
 ## Computing the classifier accuracies
 
 ### Use the trained model checkpoint to add predictions to the dataset
