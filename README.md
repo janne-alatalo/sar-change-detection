@@ -5,37 +5,51 @@ This repository includes code for the paper **Improved Difference Images for Cha
 
 Preprint available: [https://arxiv.org/abs/2303.17835](https://arxiv.org/abs/2303.17835)
 
+## Download the dataset
+
+The dataset is downloadable from here [https://doi.org/10.23729/7b22c271-5e25-40fe-aa6a-f5d0330b1872](https://doi.org/10.23729/7b22c271-5e25-40fe-aa6a-f5d0330b1872).
+
 ## Install dependencies
 
 ```
 pip install -r requirements.txt
 ```
 
-## Train the neural network
+## Preprocess the dataset
+
+The dataset must be preprocessed with `preprocess_tfrecords.py` script before
+training the model. Change `/path/to` in the filepaths to the actual location
+where you want to store the files.
 
 ```
-python main.py \
-        --train_data "/path/to/train/records/*.tfrecord.GZIP" \
-        --val_data "/path/to/val/records/*.tfrecord.GZIP" \
-        --no_checkpoints \
-        --epochs 50
-```
-
-The dataset that is used in the paper can be requested from the author: janne.alatalo(at)jamk.fi
-
-
-The dataset must be preprocessed with `preprocess_tfrecords.py` script before training the model.
-
-```
-python preprocess_tfrecords.py --dataset_stats path/to/stats.json --output_dir /path/to/train/records/ input_file.tfrecord.GZIP
+python preprocess_tfrecords.py --dataset_stats /path/to/stats.json --output_dir /path/to/processed/train/ input_file.tfrecord.GZIP
 ```
 
 You might want to use [GNU parallel](https://www.gnu.org/software/parallel/) or similar to parallellize the processing e.g.
 
 ```
-# assuming that files.txt includes filepaths to all files you want to preprocess
-parallel --halt now,fail=1 -j 45 -I{} python preprocess_tfrecords.py --dataset_stats path/to/stats.json --output_dir /path/to/train/records/ {} :::: files.txt
+# assuming that train_files.txt includes filepaths to all files you want to preprocess
+parallel --halt now,fail=1 -j 45 -I{} python preprocess_tfrecords.py --dataset_stats /path/to/stats.json --output_dir /path/to/processed/train/ {} :::: train_files.txt
 ```
+
+Do same for the validation data.
+
+```
+# assuming that val_files.txt includes filepaths to all files you want to preprocess
+parallel --halt now,fail=1 -j 45 -I{} python preprocess_tfrecords.py --dataset_stats /path/to/stats.json --output_dir /path/to/processed/val/ {} :::: val_files.txt
+```
+
+
+## Train the neural network
+
+```
+python main.py \
+        --train_data "/path/to/processed/train/records/*.tfrecord.GZIP" \
+        --val_data "/path/to/processed/val/records/*.tfrecord.GZIP" \
+        --no_checkpoints \
+        --epochs 50
+```
+
 
 ## Computing the classifier accuracies
 
@@ -44,7 +58,7 @@ parallel --halt now,fail=1 -j 45 -I{} python preprocess_tfrecords.py --dataset_s
 ```
 python generate_change_dataset_with_predictions.py \
         --model_checkpoint "logs/CHECK_THE_CORRECT_DIR/checkpoints/final" \
-        --output_dir "/where/you/want/to/store/simulated-change-with-prediction/" \
+        --output_dir "/path/to/simulated-change-with-prediction/" \
         "/path/to/val/records/*.tfrecord.GZIP"
 ```
 
@@ -53,13 +67,13 @@ python generate_change_dataset_with_predictions.py \
 For threshold classifier:
 
 ```
-python threshold_classifier.py  --save_filename minus2_5dB-shift.png --simulated_change_shift -2.5 "/where/you/want/to/store/simulated-change-with-prediction/"
+python threshold_classifier.py  --save_filename minus2_5dB-shift.png --simulated_change_shift -2.5 "/path/to/simulated-change-with-prediction/*.tfrecord.GZIP"
 ```
 
 And for SVC classifier:
 
 ```
-python svm_classifier.py "/where/you/want/to/store/simulated-change-with-prediction/"
+python svm_classifier.py "/path/to/simulated-change-with-prediction/*.tfrecord.GZIP"
 ```
 
 ## Simulated change
