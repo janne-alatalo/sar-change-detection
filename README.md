@@ -50,6 +50,16 @@ python main.py \
         --epochs 50
 ```
 
+The training script is logging the training metrics to `./logs` directory. You can see the logs with tensorboard.
+
+```
+tensorboard --logdir logs/ --samples_per_plugin "images=50"
+```
+
+Epoch loss plot with the default parameters (blue = train, red = validation):
+
+![Epoch loss plot](./figs/epoch-loss.png)
+
 
 ## Computing the classifier accuracies
 
