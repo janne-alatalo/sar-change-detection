@@ -286,7 +286,7 @@ class SARWeatherUNet(tf.keras.Model):
                     target_incidence_angle,
                     #target_mission_id,
                     target_precipitation,
-                ) = include_condition_data(latent_metadata, mission_ids=False)
+                ) = include_condition_data(latent_metadata, mission_id=False)
                 latent_metadata = tf.concat(
                     [
                         input_temperatures,

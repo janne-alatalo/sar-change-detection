@@ -436,7 +436,7 @@ def include_condition_data(
         precipitation=True,
         platform_heading=True,
         incidence_angle=True,
-        mission_ids=True,
+        mission_id=True,
     ):
     num_imgs_per_date = 4
     num_precipitations_per_date = 4
@@ -491,7 +491,7 @@ def include_condition_data(
     if incidence_angle:
         output[3] = input_incidence_angles
         output[9] = target_incidence_angle
-    if mission_ids:
+    if mission_id:
         output[5] = input_mission_ids
         output[10] = target_mission_id
 
