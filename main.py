@@ -111,8 +111,12 @@ def main(args):
         ablation_study=args.ablation_study,
     )
 
-    datenow_tag = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-    tag = datenow_tag
+    if args.logs_tag is None:
+        datenow_tag = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+        tag_prefix = datenow_tag
+    else:
+        tag_prefix = args.logs_tag
+    tag = tag_prefix
     logs_path = os.path.join('./logs', tag)
     logs_path_obj = pathlib.Path(logs_path)
     i = 1
@@ -121,7 +125,7 @@ def main(args):
             logs_path_obj.mkdir(parents=True)
             break
         except FileExistsError:
-            tag = f'{datenow_tag}_{i}'
+            tag = f'{tag_prefix}_{i}'
             logs_path = os.path.join('./logs', tag)
             logs_path_obj = pathlib.Path(logs_path)
             i += 1
@@ -416,6 +420,13 @@ if __name__ == '__main__':
         type=str,
         default=None,
         help='Example validation images that are used for TensorBoard examples',
+    )
+    parser.add_argument(
+        '--logs_tag',
+        env_var='LOGS_TAG',
+        type=str,
+        default=None,
+        help='Directory name for the logs',
     )
     parser.add_argument(
         '--dataset_stats',
