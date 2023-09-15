@@ -356,7 +356,7 @@ def x_y_split(sample):
         sample['input_image_mission_ids'],
         fn_output_signature=tf.float64,
     )
-    # NOTE! if you change this, also update ignore_weather_info function
+    # NOTE! if you change this, also update ignore_weather_info and drop_condition_data functions
     latent_metadata = tf.concat([
         tf.reshape(sample['input_image_temperatures'], [-1]),
         tf.reshape(sample['input_image_snow_depths'], [-1]),
@@ -396,14 +396,14 @@ def x_y_split(sample):
 # how model works without them.
 def ignore_weather_info(latent_vector_batch):
     num_imgs_per_date = 4
-    num_percipitations_per_date = 4
+    num_precipitations_per_date = 4
     # skip temperatures and snow_depths
     input_platform_headings_slice = slice(num_imgs_per_date * 2, num_imgs_per_date * 3)
     input_incidence_angles_slice = slice(num_imgs_per_date * 3, num_imgs_per_date * 4)
-    percipitation_offset = num_imgs_per_date * 4 + num_imgs_per_date * num_percipitations_per_date
-    input_mission_ids_slice = slice(percipitation_offset, percipitation_offset + num_imgs_per_date)
+    precipitation_offset = num_imgs_per_date * 4 + num_imgs_per_date * num_precipitations_per_date
+    input_mission_ids_slice = slice(precipitation_offset, precipitation_offset + num_imgs_per_date)
 
-    target_data_offset = percipitation_offset + num_imgs_per_date
+    target_data_offset = precipitation_offset + num_imgs_per_date
 
     target_platform_heading_idx = target_data_offset + 2
     target_incidence_angle_idx = target_data_offset + 3
@@ -425,3 +425,88 @@ def ignore_weather_info(latent_vector_batch):
         target_incidence_angle,
         target_mission_id,
     )
+
+
+# Hacky way of removing acquisition condition data from the latent vector to
+# experiment how model works without them.
+def include_condition_data(
+        latent_vector_batch,
+        temperature=True,
+        snow_depth=True,
+        precipitation=True,
+        platform_heading=True,
+        incidence_angle=True,
+        mission_ids=True,
+    ):
+    num_imgs_per_date = 4
+    num_precipitations_per_date = 4
+
+    input_temperatures_slice = slice(0, num_imgs_per_date)
+    input_snow_depths_slice = slice(num_imgs_per_date, num_imgs_per_date * 2)
+
+    input_platform_headings_slice = slice(num_imgs_per_date * 2, num_imgs_per_date * 3)
+    input_incidence_angles_slice = slice(num_imgs_per_date * 3, num_imgs_per_date * 4)
+    precipitation_offset = num_imgs_per_date * 4 + num_imgs_per_date * num_precipitations_per_date
+    input_precipitation_slice = slice(num_imgs_per_date * 4, precipitation_offset)
+    input_mission_ids_slice = slice(precipitation_offset, precipitation_offset + num_imgs_per_date)
+
+    target_data_offset = precipitation_offset + num_imgs_per_date
+
+    target_temperature_idx = target_data_offset
+    target_snow_depth_idx = target_data_offset + 1
+    target_platform_heading_idx = target_data_offset + 2
+    target_incidence_angle_idx = target_data_offset + 3
+    target_mission_id_idx = target_data_offset + 4
+    target_precipitation_slice = slice(target_data_offset + 5, None)
+
+    input_temperatures = latent_vector_batch[:, input_temperatures_slice]
+    input_snow_depths = latent_vector_batch[:, input_snow_depths_slice]
+    input_precipitation = latent_vector_batch[:, input_precipitation_slice]
+    input_platform_headings = latent_vector_batch[:, input_platform_headings_slice]
+    input_incidence_angles = latent_vector_batch[:, input_incidence_angles_slice]
+    input_mission_ids = latent_vector_batch[:, input_mission_ids_slice]
+
+    target_platform_heading = latent_vector_batch[:, target_platform_heading_idx]
+    target_incidence_angle = latent_vector_batch[:, target_incidence_angle_idx]
+    target_mission_id = latent_vector_batch[:, target_mission_id_idx]
+    target_temperature = latent_vector_batch[:, target_temperature_idx]
+    target_snow_depth = latent_vector_batch[:, target_snow_depth_idx]
+    target_precipitation = latent_vector_batch[:, target_precipitation_slice]
+
+    # The order of the latent data should not be important, but lets keep it the same anyway
+    output = [None for _ in range(12)]
+
+    if temperature:
+        output[0] = input_temperatures
+        output[6] = target_temperature
+    if snow_depth:
+        output[1] = input_snow_depths
+        output[7] = target_snow_depth
+    if precipitation:
+        output[4] = input_precipitation
+        output[11] = target_precipitation
+    if platform_heading:
+        output[2] = input_platform_headings
+        output[8] = target_platform_heading
+    if incidence_angle:
+        output[3] = input_incidence_angles
+        output[9] = target_incidence_angle
+    if mission_ids:
+        output[5] = input_mission_ids
+        output[10] = target_mission_id
+
+    # the function returns the data in following order
+    #input_temperatures,
+    #input_snow_depths,
+    #input_platform_headings,
+    #input_incidence_angles,
+    #input_precipitation,
+    #input_mission_ids,
+    #target_temperature,
+    #target_snow_depth,
+    #target_platform_heading,
+    #target_incidence_angle,
+    #target_mission_id,
+    #target_precipitation,
+
+    return tuple([i for i in output if i is not None])
