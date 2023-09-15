@@ -5,7 +5,7 @@ import tensorflow as tf
 import tensorflow_addons as tfa
 import numpy as np
 
-from dataset_functions import ignore_weather_info
+from dataset_functions import ignore_weather_info, include_condition_data
 
 def similarity_loss(input_image_stack, target_img, predicted, scaler):
 
@@ -86,6 +86,230 @@ class SARWeatherUNet(tf.keras.Model):
                 ],
                 axis=-1
             )
+        elif self.model_params.ablation_study is not None:
+            if self.model_params.ablation_study == 'temperature':
+                (
+                    #input_temperatures,
+                    input_snow_depths,
+                    input_platform_headings,
+                    input_incidence_angles,
+                    input_precipitation,
+                    input_mission_ids,
+                    #target_temperature,
+                    target_snow_depth,
+                    target_platform_heading,
+                    target_incidence_angle,
+                    target_mission_id,
+                    target_precipitation,
+                ) = include_condition_data(latent_metadata, temperature=False)
+                latent_metadata = tf.concat(
+                    [
+                        #input_temperatures,
+                        input_snow_depths,
+                        input_platform_headings,
+                        input_incidence_angles,
+                        input_precipitation,
+                        input_mission_ids,
+                        tf.stack(
+                            [
+                                #target_temperature,
+                                target_snow_depth,
+                                target_platform_heading,
+                                target_incidence_angle,
+                                target_mission_id,
+                            ],
+                            axis=-1,
+                        ),
+                        target_precipitation,
+                    ],
+                    axis=-1,
+                )
+            elif self.model_params.ablation_study == 'snow_depth':
+                (
+                    input_temperatures,
+                    #input_snow_depths,
+                    input_platform_headings,
+                    input_incidence_angles,
+                    input_precipitation,
+                    input_mission_ids,
+                    target_temperature,
+                    #target_snow_depth,
+                    target_platform_heading,
+                    target_incidence_angle,
+                    target_mission_id,
+                    target_precipitation,
+                ) = include_condition_data(latent_metadata, snow_depth=False)
+                latent_metadata = tf.concat(
+                    [
+                        input_temperatures,
+                        #input_snow_depths,
+                        input_platform_headings,
+                        input_incidence_angles,
+                        input_precipitation,
+                        input_mission_ids,
+                        tf.stack(
+                            [
+                                target_temperature,
+                                #target_snow_depth,
+                                target_platform_heading,
+                                target_incidence_angle,
+                                target_mission_id,
+                            ],
+                            axis=-1,
+                        ),
+                        target_precipitation,
+                    ],
+                    axis=-1,
+                )
+            elif self.model_params.ablation_study == 'platform_heading':
+                (
+                    input_temperatures,
+                    input_snow_depths,
+                    #input_platform_headings,
+                    input_incidence_angles,
+                    input_precipitation,
+                    input_mission_ids,
+                    target_temperature,
+                    target_snow_depth,
+                    #target_platform_heading,
+                    target_incidence_angle,
+                    target_mission_id,
+                    target_precipitation,
+                ) = include_condition_data(latent_metadata, platform_heading=False)
+                latent_metadata = tf.concat(
+                    [
+                        input_temperatures,
+                        input_snow_depths,
+                        #input_platform_headings,
+                        input_incidence_angles,
+                        input_precipitation,
+                        input_mission_ids,
+                        tf.stack(
+                            [
+                                target_temperature,
+                                target_snow_depth,
+                                #target_platform_heading,
+                                target_incidence_angle,
+                                target_mission_id,
+                            ],
+                            axis=-1,
+                        ),
+                        target_precipitation,
+                    ],
+                    axis=-1,
+                )
+            elif self.model_params.ablation_study == 'incidence_angle':
+                (
+                    input_temperatures,
+                    input_snow_depths,
+                    input_platform_headings,
+                    #input_incidence_angles,
+                    input_precipitation,
+                    input_mission_ids,
+                    target_temperature,
+                    target_snow_depth,
+                    target_platform_heading,
+                    #target_incidence_angle,
+                    target_mission_id,
+                    target_precipitation,
+                ) = include_condition_data(latent_metadata, incidence_angle=False)
+                latent_metadata = tf.concat(
+                    [
+                        input_temperatures,
+                        input_snow_depths,
+                        input_platform_headings,
+                        #input_incidence_angles,
+                        input_precipitation,
+                        input_mission_ids,
+                        tf.stack(
+                            [
+                                target_temperature,
+                                target_snow_depth,
+                                target_platform_heading,
+                                #target_incidence_angle,
+                                target_mission_id,
+                            ],
+                            axis=-1,
+                        ),
+                        target_precipitation,
+                    ],
+                    axis=-1,
+                )
+            elif self.model_params.ablation_study == 'precipitation':
+                (
+                    input_temperatures,
+                    input_snow_depths,
+                    input_platform_headings,
+                    input_incidence_angles,
+                    #input_precipitation,
+                    input_mission_ids,
+                    target_temperature,
+                    target_snow_depth,
+                    target_platform_heading,
+                    target_incidence_angle,
+                    target_mission_id,
+                    #target_precipitation,
+                ) = include_condition_data(latent_metadata, precipitation=False)
+                latent_metadata = tf.concat(
+                    [
+                        input_temperatures,
+                        input_snow_depths,
+                        input_platform_headings,
+                        input_incidence_angles,
+                        #input_precipitation,
+                        input_mission_ids,
+                        tf.stack(
+                            [
+                                target_temperature,
+                                target_snow_depth,
+                                target_platform_heading,
+                                target_incidence_angle,
+                                target_mission_id,
+                            ],
+                            axis=-1,
+                        ),
+                        #target_precipitation,
+                    ],
+                    axis=-1,
+                )
+            elif self.model_params.ablation_study == 'mission_id':
+                (
+                    input_temperatures,
+                    input_snow_depths,
+                    input_platform_headings,
+                    input_incidence_angles,
+                    input_precipitation,
+                    #input_mission_ids,
+                    target_temperature,
+                    target_snow_depth,
+                    target_platform_heading,
+                    target_incidence_angle,
+                    #target_mission_id,
+                    target_precipitation,
+                ) = include_condition_data(latent_metadata, mission_ids=False)
+                latent_metadata = tf.concat(
+                    [
+                        input_temperatures,
+                        input_snow_depths,
+                        input_platform_headings,
+                        input_incidence_angles,
+                        input_precipitation,
+                        #input_mission_ids,
+                        tf.stack(
+                            [
+                                target_temperature,
+                                target_snow_depth,
+                                target_platform_heading,
+                                target_incidence_angle,
+                                #target_mission_id,
+                            ],
+                            axis=-1,
+                        ),
+                        target_precipitation,
+                    ],
+                    axis=-1,
+                )
+
         x, skips = self.downsampler(input, training=training)
         lmd_shape = latent_metadata.shape
         # bs, len(one_sample_latent_metdata) -> bs, 1, 1, len(one_sample_latent_metdata)
@@ -109,6 +333,7 @@ class ModelParams():
     unet_skips: str
     resblock_bottleneck_multiplier: int
     no_weather_data: bool
+    ablation_study: typing.Union[str, None]
     dropout: float = 0.0
 
     def asdict(self):

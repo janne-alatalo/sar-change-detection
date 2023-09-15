@@ -108,6 +108,7 @@ def main(args):
         resblock_bottleneck_multiplier=args.resblock_bottleneck_multiplier,
         dropout=args.dropout,
         no_weather_data=args.no_weather_data,
+        ablation_study=args.ablation_study,
     )
 
     datenow_tag = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
@@ -559,13 +560,28 @@ if __name__ == '__main__':
         default=False,
         help='Ignore dirty git repository',
     )
-    parser.add_argument(
+    me_group = parser.add_mutually_exclusive_group()
+    me_group.add_argument(
         '--no_weather_data',
         type=str2bool,
         nargs='?',
         const=True,
         default=False,
         help='Do not add the weather data to the latent vectors',
+    )
+    me_group.add_argument(
+        '--ablation_study',
+        type=str,
+        default=None,
+        choices=[
+            'temperature',
+            'snow_depth',
+            'platform_heading',
+            'incidence_angle',
+            'precipitation',
+            'mission_id',
+        ],
+        help='Drop a feature from the dataset',
     )
     parser.add_argument(
         '--no_mixed_precision',
