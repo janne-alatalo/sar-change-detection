@@ -214,8 +214,12 @@ def main(args):
         print('Repository is dirty commit changes or pass --ignore_dirty_repo!')
         exit(1)
 
-    datenow_tag = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-    tag = datenow_tag
+    if args.logs_tag is None:
+        datenow_tag = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+        tag_prefix = datenow_tag
+    else:
+        tag_prefix = args.logs_tag
+    tag = tag_prefix
     logs_path = os.path.join('./logs', tag)
     logs_path_obj = pathlib.Path(logs_path)
     i = 1
@@ -224,7 +228,7 @@ def main(args):
             logs_path_obj.mkdir(parents=True)
             break
         except FileExistsError:
-            tag = f'{datenow_tag}_{i}'
+            tag = f'{tag_prefix}_{i}'
             logs_path = os.path.join('./logs', tag)
             logs_path_obj = pathlib.Path(logs_path)
             i += 1
@@ -291,7 +295,7 @@ def main(args):
     RocCurveDisplay(fpr=pred_roc[0], tpr=pred_roc[1], estimator_name='Proposed Method', roc_auc=pred_auc).plot(ax=axs, color='dimgray', linestyle='-')
     RocCurveDisplay(fpr=prev_roc[0], tpr=prev_roc[1], estimator_name='Conventional Method', roc_auc=prev_auc).plot(ax=axs, color='dimgray', linestyle='--')
 
-    if args.save_filename is None:
+    if args.show_plot:
         axs.tick_params(labelsize=20)
         axs.xaxis.label.set_size(25)
         axs.yaxis.label.set_size(25)
@@ -300,7 +304,7 @@ def main(args):
         plt.show()
     else:
         fig.tight_layout()
-        fig.savefig(args.save_filename)
+        fig.savefig(logs_path_obj / 'roc.png')
 
 
 if __name__ == '__main__':
@@ -370,10 +374,19 @@ if __name__ == '__main__':
         help='Use shift simulated change method and add the argument value to the pixel values',
     )
     parser.add_argument(
-        '--save_filename',
+        '--show_plot',
+        type=str2bool,
+        nargs='?',
+        const=True,
+        default=False,
+        help='Open a matplotlib window with the plot',
+    )
+    parser.add_argument(
+        '--logs_tag',
+        env_var='LOGS_TAG',
         type=str,
         default=None,
-        help='Save the ROC image with filename',
+        help='Directory name for the logs',
     )
     parser.add_argument(
         'tfrecord_files',
