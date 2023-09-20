@@ -157,8 +157,12 @@ def main(args):
         print('Repository is dirty commit changes or pass --ignore_dirty_repo!')
         exit(1)
 
-    datenow_tag = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-    tag = datenow_tag
+    if args.logs_tag is None:
+        datenow_tag = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+        tag_prefix = datenow_tag
+    else:
+        tag_prefix = args.logs_tag
+    tag = tag_prefix
     logs_path = os.path.join('./logs', tag)
     logs_path_obj = pathlib.Path(logs_path)
     i = 1
@@ -167,7 +171,7 @@ def main(args):
             logs_path_obj.mkdir(parents=True)
             break
         except FileExistsError:
-            tag = f'{datenow_tag}_{i}'
+            tag = f'{tag_prefix}_{i}'
             logs_path = os.path.join('./logs', tag)
             logs_path_obj = pathlib.Path(logs_path)
             i += 1
@@ -245,11 +249,21 @@ def main(args):
     svc_pred_diff.fit(x_train_pred_diff, y_train)
     svc_prev_diff.fit(x_train_prev_diff, y_train)
 
+    pred_classification_report = classification_report(y_test, svc_pred_diff.predict(x_test_pred_diff))
+    prev_classification_report = classification_report(y_test, svc_prev_diff.predict(x_test_prev_diff))
+
     print('========================== pred diff ==============================')
-    print(classification_report(y_test, svc_pred_diff.predict(x_test_pred_diff)))
+    print(pred_classification_report)
     print('========================== prev diff ==============================')
-    print(classification_report(y_test, svc_prev_diff.predict(x_test_prev_diff)))
+    print(prev_classification_report)
     print('===================================================================')
+
+    pred_report_file = logs_path_obj / 'pred_classification_report.txt'
+    prev_report_file = logs_path_obj / 'prev_classification_report.txt'
+    with pred_report_file.open('w') as f:
+        f.write(pred_classification_report)
+    with prev_report_file.open('w') as f:
+        f.write(prev_classification_report)
 
 
 if __name__ == '__main__':
@@ -309,6 +323,13 @@ if __name__ == '__main__':
         type=float,
         default=None,
         help='Use shift simulated change method and add the argument value to the pixel values',
+    )
+    parser.add_argument(
+        '--logs_tag',
+        env_var='LOGS_TAG',
+        type=str,
+        default=None,
+        help='Directory name for the logs',
     )
     parser.add_argument(
         'tfrecord_files',
