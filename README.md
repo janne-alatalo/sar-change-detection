@@ -96,6 +96,23 @@ SAR image rasters, and the database is too large to be shareable. However, you
 can request the dataset that was used to run the experiments. The dataset
 includes the simulated changes for the validation samples.
 
+## Ablation Study
+
+An ablation study was conducted for the different features to see what features
+are important for the model. The experiment can be repeated using the
+`--ablation_study` argument for the `main.py` script (e.g. `python main.py
+--ablation_study snow_depth` trains the neural network without the snow depth
+feature). The resulting validation loss plot from the different runs is
+interesting, but did not fit to the paper, therefore it is presented here. The
+loss clearly shows that the 'Orbit Direction' feature is the most important
+one, and without it the validation loss is clearly higher than when the other
+features are removed. 'Temperature', 'Precipitation', and 'Incidence Angle' are
+also important features. Removing the 'Snow Depth' and 'Satellite Id' features
+did not have much effect to the resulting validation loss as removing the other
+features.
+
+![Epoch loss plot](./figs/ablation-study.png)
+
 ## Citation (preprint version)
 
 ```
