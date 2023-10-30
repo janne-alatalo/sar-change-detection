@@ -1,9 +1,6 @@
 # Improved Difference Images for Change Detection Classifiers in SAR Imagery Using Deep Learning
 
-This repository includes code for the paper **Improved Difference Images for Change Detection Classifiers in SAR Imagery Using Deep Learning** (submitted to peer-review).
-
-
-Preprint available: [https://arxiv.org/abs/2303.17835](https://arxiv.org/abs/2303.17835)
+This repository includes code for the paper **Improved Difference Images for Change Detection Classifiers in SAR Imagery Using Deep Learning**. Published in IEEE TRANSACTIONS ON GEOSCIENCE AND REMOTE SENSING, VOL. 61, 2023, [https://doi.org/10.1109/TGRS.2023.3324994](https://doi.org/10.1109/TGRS.2023.3324994) (open-access).
 
 ## Download the dataset
 
@@ -113,17 +110,18 @@ features.
 
 ![Epoch loss plot](./figs/ablation-study.png)
 
-## Citation (preprint version)
+## Citation
 
 ```
-@misc{alatalo2023improved,
-      title={Improved Difference Images for Change Detection Classifiers in SAR Imagery Using Deep Learning}, 
-      author={Janne Alatalo and Tuomo Sipola and Mika Rantonen},
-      year={2023},
-      eprint={2303.17835},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
-}
+@ARTICLE{10286479,
+  author={Alatalo, Janne and Sipola, Tuomo and Rantonen, Mika},
+  journal={IEEE Transactions on Geoscience and Remote Sensing}, 
+  title={Improved Difference Images for Change Detection Classifiers in SAR Imagery Using Deep Learning}, 
+  year={2023},
+  volume={61},
+  number={},
+  pages={1-14},
+  doi={10.1109/TGRS.2023.3324994}}
 ```
 
 ## Acknowledgements
