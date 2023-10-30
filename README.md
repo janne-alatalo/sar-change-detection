@@ -126,9 +126,10 @@ features.
 
 ## Acknowledgements
 
-This research was funded by the Regional Council of Central Finland/Council of Tampere Region and European Regional Development Fund as part of the
-[*Data for Utilisation -- Leveraging digitalisation through modern artificial intelligence solutions and cybersecurity*](https://www.jamk.fi/en/research-and-development/rdi-projects/data-for-utilisation-leveraging-digitalisation-through-modern-artificial-intelligence-solutions-and) (grant number A76982),
-and [*coADDVA - ADDing VAlue by Computing in Manufacturing*](https://www.jamk.fi/en/research-and-development/rdi-projects/coaddva-adding-value-by-computing-in-manufacturing) (grant number A77973) projects of Jamk University of Applied Sciences.
+This research was conducted in Jamk University of Applied Sciences and was funded
+in part by the Regional Council of Central Finland/Council of Tampere Region and European Regional Development Fund as part of the project [*Data for Utilisation -- Leveraging digitalisation through modern artificial intelligence solutions and cybersecurity*](https://www.jamk.fi/en/research-and-development/rdi-projects/data-for-utilisation-leveraging-digitalisation-through-modern-artificial-intelligence-solutions-and) (grant number A76982),
+in part by the REACT-EU Instrument as part of the European Union’s response to the COVID-19 pandemic as part of the project [*coADDVA - ADDing VAlue by Computing in Manufacturing*](https://www.jamk.fi/en/research-and-development/rdi-projects/coaddva-adding-value-by-computing-in-manufacturing) (grant number A77973),
+and in part by the European Union and the Regional Council of Central Finland with the Just Transition Fund as part of the project [*Finnish Future Farm*](https://www.jamk.fi/en/research-and-development/rdi-projects/finnish-future-farm) (grant number J10075).
 
 <p>
   <img src="figs/eu-logo.png" height="100" title="Co-funded by the European Union">
