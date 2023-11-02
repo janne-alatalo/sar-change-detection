@@ -1,6 +1,6 @@
 # Improved Difference Images for Change Detection Classifiers in SAR Imagery Using Deep Learning
 
-This repository includes code for the paper **Improved Difference Images for Change Detection Classifiers in SAR Imagery Using Deep Learning**. Published in IEEE TRANSACTIONS ON GEOSCIENCE AND REMOTE SENSING, VOL. 61, 2023, [https://doi.org/10.1109/TGRS.2023.3324994](https://doi.org/10.1109/TGRS.2023.3324994) (open-access).
+This repository includes code for the paper **Improved Difference Images for Change Detection Classifiers in SAR Imagery Using Deep Learning**. Published in IEEE TRANSACTIONS ON GEOSCIENCE AND REMOTE SENSING, VOL. 61, 2023, [https://doi.org/10.1109/TGRS.2023.3324994](https://doi.org/10.1109/TGRS.2023.3324994) (open-access, also available in the `paper` folder in this repository).
 
 ## Download the dataset
 
